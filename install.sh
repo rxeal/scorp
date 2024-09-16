@@ -1,23 +1,23 @@
 #!/bin/bash
 
-echo "Installing scorp CLI..."
+INSTALL_DIR="/home/scorpio/Packages/scorp"
 
-INSTALL_DIR="$HOME/.scorp"
-BIN_DIR="$INSTALL_DIR/bin"
+mkdir -p "$INSTALL_DIR"
 
-mkdir -p "$BIN_DIR"
+echo "Downloading scorp CLI..."
+curl -L -o "$INSTALL_DIR/scorp" https://github.com/rxeal/scorp/raw/main/scorp
+curl -L -o "$INSTALL_DIR/gitswitch.sh" https://github.com/rxeal/scorp/raw/main/gitswitch.sh
+curl -L -o "$INSTALL_DIR/systemmain.sh" https://github.com/rxeal/scorp/raw/main/systemmain.sh
 
-curl -o "$BIN_DIR/scorp" https://raw.githubusercontent.com/rxeal/scorp/main/bin/scorp
-curl -o "$BIN_DIR/gitswitch.sh" https://raw.githubusercontent.com/rxeal/scorp/main/bin/gitswitch.sh
-curl -o "$BIN_DIR/systemmain.sh" https://raw.githubusercontent.com/rxeal/scorp/main/bin/systemmain.sh
+chmod +x "$INSTALL_DIR/scorp"
+chmod +x "$INSTALL_DIR/gitswitch.sh"
+chmod +x "$INSTALL_DIR/systemmain.sh"
 
-chmod +x "$BIN_DIR/scorp"
-chmod +x "$BIN_DIR/gitswitch.sh"
-chmod +x "$BIN_DIR/systemmain.sh"
-
-if ! grep -q "$BIN_DIR" <<< "$PATH"; then
-    echo 'export PATH="$PATH:$BIN_DIR"' >> "$HOME/.bashrc"
-    source "$HOME/.bashrc"
+if ! grep -q "$INSTALL_DIR" ~/.bashrc; then
+    echo "export PATH=\"$INSTALL_DIR:\$PATH\"" >> ~/.bashrc
+    echo "Added $INSTALL_DIR to PATH in ~/.bashrc"
 fi
+
+source ~/.bashrc
 
 echo "scorp CLI installed successfully!"
